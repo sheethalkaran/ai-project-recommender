@@ -1,22 +1,15 @@
-# Ignore environment variables
 .env
 
-# Byte-compiled / cache files
 __pycache__/
 *.py[cod]
 *.pyo
 
-# VS Code settings
 .vscode/
 
-# Mac OS files
 .DS_Store
 
-# Upload folders (optional)
 uploads/
 
-# Jupyter Notebook checkpoints (if any)
 .ipynb_checkpoints/
 
-# Ignore CSVs (optional, if sensitive)
 *.csv
