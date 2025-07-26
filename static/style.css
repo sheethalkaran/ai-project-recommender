@@ -1,0 +1,128 @@
+/* Body Styling */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  color: #2C3E50; /* Dark color for text (navy blue or dark gray) */
+}
+
+/* Center Content Vertically and Horizontally */
+.min-vh-100 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Card Styling */
+.card {
+  background-color: #2C3E50; /* Dark Blue */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  padding: 40px;
+  border: 1px solid #ddd;
+}
+
+/* Header Styling */
+h1 {
+  color: white;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Button Styling */
+.btn {
+  font-size: 1.2rem;
+  padding: 15px 30px;
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  border: 2px solid transparent; /* Make sure the border is consistent */
+}
+
+/* Active Button Style */
+.active {
+  background-color: #00f2fe !important; /* Light Blue */
+  color: black !important;
+  border: none;
+}
+
+/* Button Hover Effect */
+.btn:hover {
+  transform: scale(1.05);
+}
+
+
+/* Form Input Fields */
+.form-control {
+  font-size: 1rem;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+/* Form Section */
+.form {
+  display: none;
+  margin-top: 20px;
+}
+
+/* Spacing Between Buttons */
+button.w-48 {
+  width: 48%;
+  margin: 0 1% 0 0;
+}
+
+/* Center Form Contents */
+.form {
+  display: block;
+  margin-top: 1.5rem;
+}
+
+/* Form Headings */
+h3 {
+  color: white;
+  font-size: 1.75rem;
+  margin-bottom: 20px;
+}
+
+/* Additional Form Styles */
+.text-center {
+  margin-top: 20px;
+}
+
+/* Icon Styling for Buttons */
+.bi {
+  font-size: 1.5rem;
+  margin-right: 10px;
+}
+
+/* When the user selects "Enter Skills", the text inside the form should be black */
+#skills-form {
+  color: white;
+}
+
+#skills-form.active {
+  color: black;
+}
+
+#dropdown {
+  max-height: 150px;
+  overflow-y: auto; 
+  position: absolute; 
+  z-index: 1000; 
+  width: 100%; 
+  border: 1px solid #ccc; 
+  background-color: white; 
+  color: black; 
+
+#dropdown .dropdown-item {
+  padding: 8px 10px; 
+  cursor: pointer; 
+}
+
+#dropdown .dropdown-item:hover {
+  background-color: #007bff; 
+  color: white; 
+}}
