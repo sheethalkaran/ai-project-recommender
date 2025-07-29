@@ -1,6 +1,5 @@
 # AI Project Recommender
 
-## Overview
 AI Project Recommender is a Flask web application that helps users discover suitable software projects based on their skills. Users can upload their resume (PDF, DOCX, or TXT), and the app extracts relevant skills using NLP. It then recommends projects from a dataset, matching the user's skills and providing beginner, intermediate, or advanced explanations for each project.
 
 ## Features
