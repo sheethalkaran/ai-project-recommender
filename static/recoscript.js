@@ -15,14 +15,42 @@ function attachLevelButtonLogic(cardElement) {
   });
 }
 
-document.querySelectorAll('#project-container > div').forEach(attachLevelButtonLogic);
+// Initialize existing cards with level button logic
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('#project-container > div').forEach(attachLevelButtonLogic);
+  
+  // Show/hide load more button based on available projects
+  if (typeof allProjects !== 'undefined' && allProjects.length > 10) {
+    if (loadMoreBtn) {
+      loadMoreBtn.style.display = 'block';
+    }
+  }
+});
 
+// Fixed Load More functionality
 loadMoreBtn?.addEventListener('click', () => {
+  // Check if allProjects is defined
+  if (typeof allProjects === 'undefined') {
+    console.error('allProjects is not defined');
+    return;
+  }
+
+  // Get next batch of projects
   const nextProjects = allProjects.slice(currentIndex, currentIndex + 10);
+  
+  if (nextProjects.length === 0) {
+    loadMoreBtn.style.display = 'none';
+    return;
+  }
 
   nextProjects.forEach(project => {
     const div = document.createElement('div');
     div.className = "relative bg-white bg-opacity-90 shadow-md rounded-xl p-6 border-l-4 border-indigo-500 transition-transform hover:scale-[1.02] group flex justify-between items-start";
+
+    // Handle missing skills display
+    const missingSkillsText = project.missing_skills && project.missing_skills.length > 0 
+      ? project.missing_skills.join(', ') 
+      : 'None';
 
     div.innerHTML = `
       <div class="w-3/4 pr-4">
@@ -36,15 +64,33 @@ loadMoreBtn?.addEventListener('click', () => {
         </p>
         <p class="text-gray-700">
           <strong>Missing Skills:</strong>
-          <span class="text-red-600">${project.missing_skills.join(', ') || 'None'}</span>
+          <span class="text-red-600">${missingSkillsText}</span>
         </p>
       </div>
 
       <div class="w-1/4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out space-y-2">
         <p class="text-sm text-gray-500 font-semibold">Select Level:</p>
-        <button class="w-full px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 font-bold">Beginner</button>
-        <button class="w-full px-2 py-1 text-xs bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 font-bold">Intermediate</button>
-        <button class="w-full px-2 py-1 text-xs bg-pink-100 text-pink-700 rounded hover:bg-pink-200 font-bold">Advanced</button>
+        <button class="level-btn w-full px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 font-bold"
+                data-project="${project.project_name}"
+                data-level="Beginner"
+                data-matching='${JSON.stringify(project.matching_skills)}'
+                data-missing='${JSON.stringify(project.missing_skills)}'>
+          Beginner
+        </button>
+        <button class="level-btn w-full px-2 py-1 text-xs bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 font-bold"
+                data-project="${project.project_name}"
+                data-level="Intermediate"
+                data-matching='${JSON.stringify(project.matching_skills)}'
+                data-missing='${JSON.stringify(project.missing_skills)}'>
+          Intermediate
+        </button>
+        <button class="level-btn w-full px-2 py-1 text-xs bg-pink-100 text-pink-700 rounded hover:bg-pink-200 font-bold"
+                data-project="${project.project_name}"
+                data-level="Advanced"
+                data-matching='${JSON.stringify(project.matching_skills)}'
+                data-missing='${JSON.stringify(project.missing_skills)}'>
+          Advanced
+        </button>
       </div>
     `;
 
@@ -53,6 +99,8 @@ loadMoreBtn?.addEventListener('click', () => {
   });
 
   currentIndex += 10;
+  
+  // Hide load more button if no more projects
   if (currentIndex >= allProjects.length) {
     loadMoreBtn.style.display = 'none';
   }
@@ -66,7 +114,7 @@ const chatbot = document.getElementById('chatbot-modal');
 const toggleSizeBtn = document.getElementById('toggle-size');
 let isMaximized = false;
 
-toggleSizeBtn.addEventListener('click', () => {
+toggleSizeBtn?.addEventListener('click', () => {
   isMaximized = !isMaximized;
   if (isMaximized) {
     chatbot.classList.remove('w-[350px]', 'h-[550px]', 'rounded-xl', 'bottom-4', 'right-4');
@@ -79,9 +127,8 @@ toggleSizeBtn.addEventListener('click', () => {
   }
 });
 
-
-// Chat send
-inputField.addEventListener("keypress", function (e) {
+// Chat send functionality
+inputField?.addEventListener("keypress", function (e) {
   if (e.key === "Enter") {
     const input = e.target.value.trim();
     if (!input) return;
@@ -104,13 +151,17 @@ function sendToAIChat(userMessage) {
     .then(res => res.json())
     .then(data => {
       if (typingElem) typingElem.remove();
-      chatMessages.push({ role: "assistant", content: data.reply });
-      appendMessage("assistant", data.reply);
+      if (data.reply) {
+        chatMessages.push({ role: "assistant", content: data.reply });
+        appendMessage("assistant", data.reply);
+      } else if (data.error) {
+        appendMessage("assistant", "Sorry, there was an error: " + data.error);
+      }
     })
     .catch(err => {
       console.error('Error in chat:', err);
       if (typingElem) typingElem.remove();
-      appendMessage("assistant", "Oops! Something went wrong.");
+      appendMessage("assistant", "Oops! Something went wrong. Please try again.");
     });
 }
 
@@ -119,16 +170,12 @@ function appendMessage(role, content) {
   const msgWrapper = document.createElement('div');
   msgWrapper.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} w-full`;
 
-
-const bubble = document.createElement('div');
-bubble.className = `max-w-[75%] px-5 py-3 rounded-2xl shadow text-lg font-[Roboto] leading-relaxed tracking-wide transition-opacity duration-300 ease-in opacity-0 animate-fadeIn ${
-  role === 'user'
-    ? 'bg-gray-700 text-white rounded-bl-none'    // dark grey background for user
-    : 'bg-blue-900 text-white rounded-br-none'    // dark blue background for bot
-}`;
-
-
-
+  const bubble = document.createElement('div');
+  bubble.className = `max-w-[75%] px-5 py-3 rounded-2xl shadow text-lg font-[Roboto] leading-relaxed tracking-wide transition-opacity duration-300 ease-in opacity-0 animate-fadeIn ${
+    role === 'user'
+      ? 'bg-gray-700 text-white rounded-bl-none'
+      : 'bg-blue-900 text-white rounded-br-none'
+  }`;
 
   bubble.innerText = content;
 
@@ -140,24 +187,18 @@ bubble.className = `max-w-[75%] px-5 py-3 rounded-2xl shadow text-lg font-[Robot
   msgWrapper.appendChild(bubble);
   chat.appendChild(msgWrapper);
   chat.scrollTop = chat.scrollHeight;
+  
+  // Trigger animation
+  setTimeout(() => {
+    bubble.style.opacity = '1';
+  }, 10);
 }
-
-function handleSend(event) {
-  if (event) event.preventDefault();  // Prevent default form submit if called by a button
-  const input = document.getElementById('chatbot-input');
-  const message = input.value.trim();
-  if (message) {
-    console.log("User sent:", message);
-    input.value = '';
-  }
-}
-
 
 function showChatbotWithProject(button) {
   const project = button.getAttribute('data-project');
   const level = button.getAttribute('data-level');
-  const matching = JSON.parse(button.getAttribute('data-matching'));
-  const missing = JSON.parse(button.getAttribute('data-missing'));
+  const matching = JSON.parse(button.getAttribute('data-matching') || '[]');
+  const missing = JSON.parse(button.getAttribute('data-missing') || '[]');
 
   const firstPrompt = `Project: ${project}\nLevel: ${level}\nMatching Skills: ${matching.join(', ')}\nMissing Skills: ${missing.join(', ')}\nGive a detailed project description.`;
 
@@ -166,9 +207,14 @@ function showChatbotWithProject(button) {
   document.getElementById('chatbot-level-info').innerText = `Level: ${level}`;
   document.getElementById('chatbot-modal').classList.remove('hidden');
 
+  // Clear previous chat content
+  const chatContent = document.getElementById('chatbot-content');
+  chatContent.innerHTML = '';
+
   sendToAIChat(firstPrompt);
 }
 
+// Event delegation for level buttons (works for dynamically added content)
 document.addEventListener('click', function (e) {
   if (e.target.classList.contains('level-btn')) {
     showChatbotWithProject(e.target);
@@ -177,4 +223,8 @@ document.addEventListener('click', function (e) {
 
 function closeChatbot() {
   document.getElementById('chatbot-modal').classList.add('hidden');
+  // Clear chat messages when closing
+  chatMessages = [];
+  const chatContent = document.getElementById('chatbot-content');
+  chatContent.innerHTML = '';
 }

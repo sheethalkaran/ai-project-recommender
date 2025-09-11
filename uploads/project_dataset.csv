@@ -280,3 +280,13 @@ Action Recognition in Videos,Deep Learning,Python,Keras,TensorFlow,CNN,RNN,OpenC
 Image Style Transfer,Deep Learning,Python,TensorFlow,Keras,GANs,OpenCV,NumPy
 Text Classification,Deep Learning,Python,Keras,TensorFlow,RNN,NLP,Scikit-learn
 Deep Learning for Anomaly Detection,Deep Learning,Python,PyTorch,Keras,Autoencoders,TensorFlow,Scikit-learn
+Online Bookstore,Web Development,Java,Spring Boot,MySQL,HTML,CSS,JavaScript
+Student Result Dashboard,Data Visualization,Python,Pandas,Excel,Tableau,Power BI,Data Cleaning
+Personal Portfolio Website,Web Development,HTML,CSS,JavaScript,Bootstrap,GitHub Pages,Responsive Design
+Online Quiz System,Web Development,PHP,MySQL,HTML,CSS,JavaScript,Authentication
+Hospital Management System,App Development,Java,JDBC,MySQL,HTML,CSS,Swing/JavaFX
+Movie Recommendation App,Data Science,Python,Scikit-learn,Pandas,MongoDB,Flask/Django,RESTful APIs
+Online Food Ordering System,Web Development,Python,Django,MySQL,HTML,CSS,JavaScript
+Inventory Management Tool,Desktop App,C,File Handling,MySQL,Data Structures,Reporting (Excel),CRUD Operations
+Traffic Analysis Dashboard,Data Visualization,Python,Tableau,Power BI,Pandas,Excel,Data Preprocessing
+Blogging Platform,Web Development,JavaScript,Node.js,Express.js,MongoDB,JWT Authentication,RESTful APIs

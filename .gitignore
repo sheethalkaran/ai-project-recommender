@@ -8,6 +8,7 @@ __pycache__/
 
 .DS_Store
 
+# Ignore entire uploads folder
 uploads/
 
 .ipynb_checkpoints/
